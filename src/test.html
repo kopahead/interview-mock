@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Todo App Tests</title>
+        <style>
+            .test-pass { color: green; margin: 5px; }
+            .test-fail { color: red; margin: 5px; }
+            .test-error { margin-left: 20px; font-size: 0.9em; color: #666; }
+            .test-summary { margin-top: 20px; font-weight: bold; }
+            #test-results { font-family: monospace; padding: 20px; }
+        </style>
+    </head>
+    <body>
+        <div id="test-results"></div>
+        <script src="todo.js"></script>
+        <script>
+            const runner = {
+                tests: [],
+                beforeEachFn: null,
+
+                test(name, fn) {
+                    this.tests.push({ name, fn });
+                },
+
+                beforeEach(fn) {
+                    this.beforeEachFn = fn;
+                },
+
+                async run() {
+                    const results = [];
+                    for (const test of this.tests) {
+                        try {
+                            if (this.beforeEachFn) {
+                                await this.beforeEachFn();
+                            }
+                            await test.fn();
+                            results.push({ name: test.name, passed: true });
+                        } catch (error) {
+                            results.push({
+                                name: test.name,
+                                passed: false,
+                                error: error.message
+                            });
+                        }
+                    }
+                    this.displayResults(results);
+                },
+
+                displayResults(results) {
+                    const container = document.getElementById('test-results');
+                    container.innerHTML = '';
+                    
+                    results.forEach(result => {
+                        const div = document.createElement('div');
+                        div.className = result.passed ? 'test-pass' : 'test-fail';
+                        div.textContent = `${result.passed ? '✓' : '✗'} ${result.name}`;
+                        if (!result.passed) {
+                            const error = document.createElement('div');
+                            error.className = 'test-error';
+                            error.textContent = result.error;
+                            div.appendChild(error);
+                        }
+                        container.appendChild(div);
+                    });
+
+                    const summary = document.createElement('div');
+                    const passed = results.filter(r => r.passed).length;
+                    summary.textContent = `Passed: ${passed}/${results.length}`;
+                    summary.className = 'test-summary';
+                    container.appendChild(summary);
+                }
+            };
+
+            window.onload = () => {
+                runner.beforeEach(() => {
+                    window.todos = [];
+                    window.currentFilter = 'all';
+                });
+
+                runner.test('should add new todo', () => {
+                    const todo = window.addTodo('New Todo');
+                    if (!todo) throw new Error('Todo not created');
+                    if (todos.length !== 1) throw new Error('Todo not added to list');
+                    if (todos[0].text !== 'New Todo') throw new Error('Wrong todo text');
+                });
+
+                runner.test('should toggle todo', () => {
+                    const todo = window.addTodo('Test Todo');
+                    window.toggleTodo(todo.id);
+                    if (!todos[0].completed) throw new Error('Todo not toggled');
+                });
+
+                runner.test('should delete todo', () => {
+                    const todo = window.addTodo('Test Todo');
+                    window.deleteTodo(todo.id);
+                    if (todos.length !== 0) throw new Error('Todo not deleted');
+                });
+
+                runner.run();
+            };
+        </script>
+    </body>
+</html>

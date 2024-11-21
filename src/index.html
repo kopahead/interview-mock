@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Todo App</title>
+        <style>
+            :root {
+                --primary: #4a90e2;
+                --secondary: #f5f5f5;
+                --text: #333;
+                --danger: #e74c3c;
+            }
+
+            body {
+                font-family: 'Segoe UI', system-ui, sans-serif;
+                background: #f0f2f5;
+                color: var(--text);
+                line-height: 1.6;
+            }
+
+            .container {
+                max-width: 600px;
+                margin: 2rem auto;
+                padding: 2rem;
+                background: white;
+                border-radius: 8px;
+                box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            }
+
+            h1 {
+                color: var(--primary);
+                margin-bottom: 1.5rem;
+                text-align: center;
+            }
+
+            .input-group {
+                display: flex;
+                gap: 0.5rem;
+                margin-bottom: 1.5rem;
+            }
+
+            input[type="text"] {
+                flex: 1;
+                padding: 0.5rem;
+                border: 2px solid var(--secondary);
+                border-radius: 4px;
+                font-size: 1rem;
+            }
+
+            button {
+                background: var(--primary);
+                color: white;
+                border: none;
+                padding: 0.5rem 1rem;
+                border-radius: 4px;
+                cursor: pointer;
+                transition: opacity 0.2s;
+            }
+
+            button:hover {
+                opacity: 0.9;
+            }
+
+            .filters {
+                display: flex;
+                gap: 0.5rem;
+                margin-bottom: 1.5rem;
+            }
+
+            .filter {
+                background: var(--secondary);
+                color: var(--text);
+            }
+
+            .filter.active {
+                background: var(--primary);
+                color: white;
+            }
+
+            #todoList {
+                list-style: none;
+                padding: 0;
+            }
+
+            .todo-item {
+                display: flex;
+                align-items: center;
+                padding: 1rem;
+                background: var(--secondary);
+                border-radius: 4px;
+                margin-bottom: 0.5rem;
+            }
+
+            .todo-item input[type="checkbox"] {
+                margin-right: 1rem;
+            }
+
+            .todo-item span {
+                flex: 1;
+            }
+
+            .todo-item .delete {
+                background: var(--danger);
+            }
+
+            .completed {
+                text-decoration: line-through;
+                opacity: 0.7;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <h1>Todo App</h1>
+            <div class="input-group">
+                <input type="text" id="todoInput" placeholder="Enter todo">
+                <button id="addButton">Add</button>
+            </div>
+            <div class="filters">
+                <button class="filter active" data-filter="all">All</button>
+                <button class="filter" data-filter="active">Active</button>
+                <button class="filter" data-filter="completed">Completed</button>
+            </div>
+            <ul id="todoList"></ul>
+        </div>
+        <script src="todo.js"></script>
+    </body>
+</html>
