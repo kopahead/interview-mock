@@ -18,7 +18,7 @@ todo-app/
 ## Setup
 1. Clone repository
 ```bash
-git clone [repository-url]
+git clone git@github.com:kopahead/interview-mock.git
 cd todo-app
 ```
 
